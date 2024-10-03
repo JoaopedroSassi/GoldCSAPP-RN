@@ -31,10 +31,7 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={require("./assets/logo_grande.png")} style={styles.logo} />
-
-      <Text style={styles.brandTitle}>GOLDCS</Text>
-      <Text style={styles.brandSubtitle}>Sonhos dourados</Text>
+      <Image source={require("./assets/logo-white.svg")} style={styles.logo} />
 
       <View style={styles.form}>
         <TextInput
@@ -83,20 +80,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    width: width * 0.6, // 60% da largura da tela
-    height: width * 0.35, // proporção de altura para manter a imagem no formato desejado
+    width: 200, 
+    height: 200, 
     resizeMode: "contain",
     marginBottom: 20,
-  },
-  brandTitle: {
-    color: "#FFFFFF",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  brandSubtitle: {
-    color: "#FFD700",
-    fontSize: 16,
-    marginBottom: 40,
   },
   form: {
     backgroundColor: "#FFFFFF",
