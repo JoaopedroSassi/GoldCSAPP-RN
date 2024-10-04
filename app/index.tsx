@@ -18,6 +18,7 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [focusedInput, setFocusedInput] = useState<string | null>(null); // Armazenar qual input está focado
 
   const handleLogin = () => {
     // Simulando a validação de erro para fins de exemplo
@@ -29,27 +30,37 @@ const LoginScreen: React.FC = () => {
     }
   };
 
+  const getPlaceholderTextColor = (input: string) => {
+    if (error) return "#FF0000";
+    if (focusedInput === input) return "#343aeb";
+    return "#000000";
+  };
+
   return (
     <View style={styles.container}>
       <Image source={require("./assets/logo-white.svg")} style={styles.logo} />
 
       <View style={styles.form}>
         <TextInput
-          style={[styles.input, error && styles.inputError]}
+          style={[styles.input, error && styles.inputError, focusedInput === 'email' && styles.inputBorderFocused]}
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
-          placeholderTextColor={error ? "#FF0000" : "#000000"}
+          onFocus={() => { setFocusedInput('email') }}
+          onBlur={() => { setFocusedInput(null) }}
+          placeholderTextColor={getPlaceholderTextColor('email')}
           keyboardType="email-address"
         />
         <View style={styles.passwordContainer}>
           <TextInput
-            style={[styles.input, error && styles.inputError]}
+            style={[styles.input, error && styles.inputError, focusedInput === 'password' && styles.inputBorderFocused]}
             placeholder="Senha"
             value={password}
             onChangeText={setPassword}
+            onFocus={() => { setFocusedInput('password') }}
+            onBlur={() => { setFocusedInput(null) }}
             secureTextEntry={!showPassword}
-            placeholderTextColor={error ? "#FF0000" : "#000000"}
+            placeholderTextColor={getPlaceholderTextColor('password')}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Icon
@@ -80,8 +91,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    width: 200, 
-    height: 200, 
+    width: 200,
+    height: 200,
     resizeMode: "contain",
     marginBottom: 20,
   },
@@ -106,6 +117,9 @@ const styles = StyleSheet.create({
   },
   inputError: {
     borderBottomColor: "#FF0000",
+  },
+  inputBorderFocused: {
+    borderBottomColor: "#343aeb",
   },
   passwordContainer: {
     flexDirection: "row",
