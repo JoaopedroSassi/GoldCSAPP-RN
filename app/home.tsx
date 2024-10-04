@@ -123,6 +123,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#1A1ABB',
     borderRadius: 8,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   pedidoCliente: {
     fontWeight: 'bold',
