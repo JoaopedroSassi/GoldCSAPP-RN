@@ -10,13 +10,15 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "./services/api";
+import { useNavigation } from "@react-navigation/native";
 
-const LoginScreen: React.FC = () => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     try {
@@ -24,13 +26,17 @@ const LoginScreen: React.FC = () => {
         email,
         password,
       });
-      const { token } = response.data;
+      const { token } = response.data.result;
 
       await AsyncStorage.setItem("token", token);
+      console.log(token);
 
+      //navigation.navigate("home");
       setError(false);
     } catch (error) {
       setError(true);
+      setEmail("");
+      setPassword("");
     }
   };
 
@@ -163,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default Login;
