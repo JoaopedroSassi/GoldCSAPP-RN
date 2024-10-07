@@ -6,27 +6,31 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
-// Obtendo as dimensões da tela
-const { width } = Dimensions.get("window");
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "./services/api";
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [focusedInput, setFocusedInput] = useState<string | null>(null); // Armazenar qual input está focado
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
-  const handleLogin = () => {
-    // Simulando a validação de erro para fins de exemplo
-    if (email !== "test@example.com" || password !== "123456") {
-      setError(true);
-    } else {
+  const handleLogin = async () => {
+    try {
+      const response = await api.post("/Authenticate/LoginUser", {
+        email,
+        password,
+      });
+      const { token } = response.data;
+
+      await AsyncStorage.setItem("token", token);
+
       setError(false);
-      // lógica de login
+    } catch (error) {
+      setError(true);
     }
   };
 
@@ -42,25 +46,41 @@ const LoginScreen: React.FC = () => {
 
       <View style={styles.form}>
         <TextInput
-          style={[styles.input, error && styles.inputError, focusedInput === 'email' && styles.inputBorderFocused]}
+          style={[
+            styles.input,
+            error && styles.inputError,
+            focusedInput === "email" && styles.inputBorderFocused,
+          ]}
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
-          onFocus={() => { setFocusedInput('email') }}
-          onBlur={() => { setFocusedInput(null) }}
-          placeholderTextColor={getPlaceholderTextColor('email')}
+          onFocus={() => {
+            setFocusedInput("email");
+          }}
+          onBlur={() => {
+            setFocusedInput(null);
+          }}
+          placeholderTextColor={getPlaceholderTextColor("email")}
           keyboardType="email-address"
         />
         <View style={styles.passwordContainer}>
           <TextInput
-            style={[styles.input, error && styles.inputError, focusedInput === 'password' && styles.inputBorderFocused]}
+            style={[
+              styles.input,
+              error && styles.inputError,
+              focusedInput === "password" && styles.inputBorderFocused,
+            ]}
             placeholder="Senha"
             value={password}
             onChangeText={setPassword}
-            onFocus={() => { setFocusedInput('password') }}
-            onBlur={() => { setFocusedInput(null) }}
+            onFocus={() => {
+              setFocusedInput("password");
+            }}
+            onBlur={() => {
+              setFocusedInput(null);
+            }}
             secureTextEntry={!showPassword}
-            placeholderTextColor={getPlaceholderTextColor('password')}
+            placeholderTextColor={getPlaceholderTextColor("password")}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Icon
