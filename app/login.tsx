@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "./services/api";
 import { useNavigation } from "@react-navigation/native";
 
-const Login: React.FC = () => {
+const login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
@@ -169,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default login;

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BottomNav from './components/bottomNav'; // Importando o componente de navegação
 
-const PedidoDetalhes: React.FC = () => {
+const OrderDetails: React.FC = () => {
   const navigateToHome = () => {
     // Lógica de navegação para a Home
   };
@@ -131,4 +131,4 @@ shadowColor: "#000000",
   },
 });
 
-export default PedidoDetalhes;
+export default OrderDetails;

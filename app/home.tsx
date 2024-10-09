@@ -40,7 +40,7 @@ const pedidos: Pedido[] = [
   { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
 ];
 
-const Home: React.FC = () => {
+const home: React.FC = () => {
   const navigateToHome = () => {
     // Lógica de navegação para a Home
   };
@@ -171,4 +171,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default home;
