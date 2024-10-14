@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useRouter } from "expo-router";
+
 import api from "./services/api";
-import { useNavigation } from "@react-navigation/native";
 
 const login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -18,7 +20,19 @@ const login: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
-  const navigation = useNavigation();
+  const router = useRouter();
+
+  useEffect(() => {
+    const clearStorageItem = async () => {
+      try {
+        await AsyncStorage.removeItem("jwtToken");
+      } catch (e) {
+        console.error("Erro ao remover o JWT do AsyncStorage", e);
+      }
+    };
+
+    clearStorageItem();
+  });
 
   const handleLogin = async () => {
     try {
@@ -26,13 +40,12 @@ const login: React.FC = () => {
         email,
         password,
       });
+
       const { token } = response.data.result;
 
-      await AsyncStorage.setItem("token", token);
-      console.log(token);
+      await AsyncStorage.setItem("jwtToken", token);
 
-      //navigation.navigate("home");
-      setError(false);
+      router.push("/home");
     } catch (error) {
       setError(true);
       setEmail("");
