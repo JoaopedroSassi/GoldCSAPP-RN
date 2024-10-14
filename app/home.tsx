@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,9 +6,10 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import BottomNav from './components/bottomNav';
+} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import BottomNav from "./components/bottomNav";
+import { useRouter } from "expo-router";
 
 interface Pedido {
   id: string;
@@ -18,29 +19,119 @@ interface Pedido {
 }
 
 const pedidos: Pedido[] = [
-  { id: '1', nomeCliente: 'Nome cliente', numeroPedido: '12345', dataPedido: '01/10/2024' },
-  { id: '2', nomeCliente: 'Nome cliente', numeroPedido: '12346', dataPedido: '02/10/2024' },
-  { id: '3', nomeCliente: 'Nome cliente', numeroPedido: '12347', dataPedido: '03/10/2024' },
-  { id: '4', nomeCliente: 'Nome cliente', numeroPedido: '12348', dataPedido: '04/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
-  { id: '5', nomeCliente: 'Nome cliente', numeroPedido: '12349', dataPedido: '05/10/2024' },
+  {
+    id: "1",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12345",
+    dataPedido: "01/10/2024",
+  },
+  {
+    id: "2",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12346",
+    dataPedido: "02/10/2024",
+  },
+  {
+    id: "3",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12347",
+    dataPedido: "03/10/2024",
+  },
+  {
+    id: "4",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12348",
+    dataPedido: "04/10/2024",
+  },
+  {
+    id: "5",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "6",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "7",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "8",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "9",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "10",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "11",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "12",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "13",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "14",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "15",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "16",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "17",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
+  {
+    id: "18",
+    nomeCliente: "Nome cliente",
+    numeroPedido: "12349",
+    dataPedido: "05/10/2024",
+  },
 ];
 
-const HomeScreen: React.FC = () => {
+const home: React.FC = () => {
+  const router = useRouter();
+
   const navigateToHome = () => {
     // Lógica de navegação para a Home
   };
@@ -60,20 +151,24 @@ const HomeScreen: React.FC = () => {
     </TouchableOpacity>
   );
 
+  const handleNavigation = () => {
+    router.push("/login");
+  };
+
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
-        <Image source={require('./assets/logoGoldCS.png')} style={styles.logo} />
-        <TouchableOpacity>
+        <Image
+          source={require("./assets/logoGoldCS.png")}
+          style={styles.logo}
+        />
+        <TouchableOpacity onPress={handleNavigation}>
           <Icon name="exit-to-app" size={30} color="#1A1ABB" />
         </TouchableOpacity>
       </View>
 
-      {/* Título */}
       <Text style={styles.title}>Últimos pedidos</Text>
 
-      {/* Lista de Pedidos */}
       <FlatList
         data={pedidos}
         renderItem={renderPedido}
@@ -81,7 +176,10 @@ const HomeScreen: React.FC = () => {
         contentContainerStyle={styles.listaPedidos}
       />
 
-      <BottomNav navigateToHome={navigateToHome} navigateToPedidos={navigateToPedidos} />
+      <BottomNav
+        navigateToHome={navigateToHome}
+        navigateToPedidos={navigateToPedidos}
+      />
     </View>
   );
 };
@@ -89,25 +187,25 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: "#E0E0E0",
   },
   logo: {
     width: 100,
     height: 50,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 16,
     marginLeft: 16,
   },
@@ -115,13 +213,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   pedidoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1A1ABB',
+    borderColor: "#1A1ABB",
     borderRadius: 8,
     shadowColor: "#000000",
     shadowOffset: {
@@ -133,7 +231,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   pedidoCliente: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
     marginBottom: 4,
   },
@@ -143,32 +241,32 @@ const styles = StyleSheet.create({
   },
   pedidoData: {
     fontSize: 14,
-    color: '#808080',
+    color: "#808080",
   },
   bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
     paddingVertical: 10,
-    backgroundColor: '#1A1ABB',
+    backgroundColor: "#1A1ABB",
   },
   navItem: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   navText: {
-    color: '#1A1ABB',
+    color: "#1A1ABB",
     fontSize: 12,
     marginTop: 4,
   },
   navCenterButton: {
     width: 60,
     height: 60,
-    backgroundColor: '#FFD700',
+    backgroundColor: "#FFD700",
     borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 10,
   },
 });
 
-export default HomeScreen;
+export default home;

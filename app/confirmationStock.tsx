@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import BottomNav from "./components/bottomNav";
 import { useNavigation } from "@react-navigation/native";
 
-const ConfirmationStock: React.FC = () => {
+const confirmationStock: React.FC = () => {
   const navigation = useNavigation();
   const navigateToHome = () => {
     // Lógica de navegação para a Home
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmationStock;
+export default confirmationStock;

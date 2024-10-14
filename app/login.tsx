@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,27 +6,50 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Obtendo as dimensões da tela
-const { width } = Dimensions.get("window");
+import { useRouter } from "expo-router";
 
-const LoginScreen: React.FC = () => {
+import api from "./services/api";
+
+const login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [focusedInput, setFocusedInput] = useState<string | null>(null); // Armazenar qual input está focado
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const router = useRouter();
 
-  const handleLogin = () => {
-    // Simulando a validação de erro para fins de exemplo
-    if (email !== "test@example.com" || password !== "123456") {
+  useEffect(() => {
+    const clearStorageItem = async () => {
+      try {
+        await AsyncStorage.removeItem("jwtToken");
+      } catch (e) {
+        console.error("Erro ao remover o JWT do AsyncStorage", e);
+      }
+    };
+
+    clearStorageItem();
+  });
+
+  const handleLogin = async () => {
+    try {
+      const response = await api.post("/Authenticate/LoginUser", {
+        email,
+        password,
+      });
+
+      const { token } = response.data.result;
+
+      await AsyncStorage.setItem("jwtToken", token);
+
+      router.push("/home");
+    } catch (error) {
       setError(true);
-    } else {
-      setError(false);
-      // lógica de login
+      setEmail("");
+      setPassword("");
     }
   };
 
@@ -42,25 +65,41 @@ const LoginScreen: React.FC = () => {
 
       <View style={styles.form}>
         <TextInput
-          style={[styles.input, error && styles.inputError, focusedInput === 'email' && styles.inputBorderFocused]}
+          style={[
+            styles.input,
+            error && styles.inputError,
+            focusedInput === "email" && styles.inputBorderFocused,
+          ]}
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
-          onFocus={() => { setFocusedInput('email') }}
-          onBlur={() => { setFocusedInput(null) }}
-          placeholderTextColor={getPlaceholderTextColor('email')}
+          onFocus={() => {
+            setFocusedInput("email");
+          }}
+          onBlur={() => {
+            setFocusedInput(null);
+          }}
+          placeholderTextColor={getPlaceholderTextColor("email")}
           keyboardType="email-address"
         />
         <View style={styles.passwordContainer}>
           <TextInput
-            style={[styles.input, error && styles.inputError, focusedInput === 'password' && styles.inputBorderFocused]}
+            style={[
+              styles.input,
+              error && styles.inputError,
+              focusedInput === "password" && styles.inputBorderFocused,
+            ]}
             placeholder="Senha"
             value={password}
             onChangeText={setPassword}
-            onFocus={() => { setFocusedInput('password') }}
-            onBlur={() => { setFocusedInput(null) }}
+            onFocus={() => {
+              setFocusedInput("password");
+            }}
+            onBlur={() => {
+              setFocusedInput(null);
+            }}
             secureTextEntry={!showPassword}
-            placeholderTextColor={getPlaceholderTextColor('password')}
+            placeholderTextColor={getPlaceholderTextColor("password")}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Icon
@@ -143,4 +182,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default login;
