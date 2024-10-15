@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,126 +11,30 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import BottomNav from "./components/bottomNav";
 import { useRouter } from "expo-router";
 
-interface Pedido {
-  id: string;
-  nomeCliente: string;
-  numeroPedido: string;
-  dataPedido: string;
-}
-
-const pedidos: Pedido[] = [
-  {
-    id: "1",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12345",
-    dataPedido: "01/10/2024",
-  },
-  {
-    id: "2",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12346",
-    dataPedido: "02/10/2024",
-  },
-  {
-    id: "3",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12347",
-    dataPedido: "03/10/2024",
-  },
-  {
-    id: "4",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12348",
-    dataPedido: "04/10/2024",
-  },
-  {
-    id: "5",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "6",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "7",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "8",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "9",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "10",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "11",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "12",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "13",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "14",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "15",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "16",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "17",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-  {
-    id: "18",
-    nomeCliente: "Nome cliente",
-    numeroPedido: "12349",
-    dataPedido: "05/10/2024",
-  },
-];
+import { Order } from "./interfaces/Order";
+import api from "./services/api";
 
 const home: React.FC = () => {
   const router = useRouter();
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const fetchPedidos = async () => {
+      try {
+        const response = await api.get("/Order");
+
+        const success = response.data.success;
+        if (success) {
+          const result = response.data.result;
+          setOrders(result);
+        }
+      } catch (e) {
+        console.error("Erro ao trazer os Pedidos", e);
+      }
+    };
+
+    fetchPedidos();
+  }, []);
 
   const navigateToHome = () => {
     // Lógica de navegação para a Home
@@ -140,12 +44,18 @@ const home: React.FC = () => {
     // Lógica de navegação para a tela de Pedidos
   };
 
-  const renderPedido = ({ item }: { item: Pedido }) => (
+  const renderPedido = ({ item }: { item: Order }) => (
     <TouchableOpacity style={styles.pedidoContainer}>
       <View>
-        <Text style={styles.pedidoCliente}>{item.nomeCliente}</Text>
-        <Text style={styles.pedidoNumero}>{item.numeroPedido}</Text>
-        <Text style={styles.pedidoData}>{item.dataPedido}</Text>
+        <Text style={styles.pedidoCliente}>{item.client.name}</Text>
+        <Text style={styles.pedidoNumero}>{item.orderID}</Text>
+        <Text style={styles.pedidoData}>
+          {new Date(item.orderDate).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          })}
+        </Text>
       </View>
       <Icon name="chevron-right" size={24} color="#1A1ABB" />
     </TouchableOpacity>
@@ -170,9 +80,8 @@ const home: React.FC = () => {
       <Text style={styles.title}>Últimos pedidos</Text>
 
       <FlatList
-        data={pedidos}
+        data={orders}
         renderItem={renderPedido}
-        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listaPedidos}
       />
 
