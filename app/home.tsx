@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import BottomNav from "./components/bottomNav";
-import { useRouter } from "expo-router";
+import { useRouter, Router } from "expo-router";
 
 import { Order } from "./interfaces/Order";
 import api from "./services/api";
@@ -44,8 +44,18 @@ const home: React.FC = () => {
     // Lógica de navegação para a tela de Pedidos
   };
 
+  const navigateToDetails = (router: Router, pedido: Order) => {
+    router.push({
+      pathname: "/orderDetails",
+      params: { pedido: JSON.stringify(pedido) },
+    });
+  };
+
   const renderPedido = ({ item }: { item: Order }) => (
-    <TouchableOpacity style={styles.pedidoContainer}>
+    <TouchableOpacity
+      onPress={() => navigateToDetails(router, item)}
+      style={styles.pedidoContainer}
+    >
       <View>
         <Text style={styles.pedidoCliente}>{item.client.name}</Text>
         <Text style={styles.pedidoNumero}>{item.orderID}</Text>
