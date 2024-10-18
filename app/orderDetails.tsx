@@ -1,9 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import BottomNav from './components/bottomNav'; // Importando o componente de navegação
+import React from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import BottomNav from "./components/bottomNav";
+import { router, useLocalSearchParams } from "expo-router";
+import { Order } from "./interfaces/Order";
 
 const OrderDetails: React.FC = () => {
+  const { order } = useLocalSearchParams();
+  const orderObj: Order | null = order ? JSON.parse(order as string) : null;
+
   const navigateToHome = () => {
     // Lógica de navegação para a Home
   };
@@ -12,86 +17,142 @@ const OrderDetails: React.FC = () => {
     // Lógica de navegação para a tela de Pedidos
   };
 
-  return (
-    <View style={styles.container}>
-      {/* Header com ícone de voltar */}
-      <View style={styles.header}>
-        <Icon name="arrow-back" size={30} color="#000" />
-        <Text style={styles.headerText}>Pedido {`{id}`}</Text>
+  const handleNavigation = () => {
+    router.push("/home");
+  };
+
+  const formatCPF = (cpf: string) => {
+    return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+  };
+
+  const formatCellPhone = (cellPhone: string) => {
+    return cellPhone.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+  };
+
+  if (!orderObj) {
+    return <Text>Erro ao carregar os detalhes do pedido.</Text>;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Icon
+            name="arrow-back"
+            size={30}
+            color="#000"
+            onPress={handleNavigation}
+          />
+          <Text style={styles.headerText}>Pedido {`${orderObj.orderID}`}</Text>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Cliente</Text>
+            <View style={styles.card}>
+              <Text
+                style={styles.cardTextBold}
+              >{`${orderObj.client.name}`}</Text>
+              <Text style={styles.cardText}>{`${formatCPF(
+                orderObj.client.cpf
+              )}`}</Text>
+              <Text style={styles.cardText}>{`${orderObj.client.email}`}</Text>
+              <Text style={styles.cardText}>{`${formatCellPhone(
+                orderObj.client.cellPhone
+              )}`}</Text>
+            </View>
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Entrega</Text>
+            <View style={styles.card}>
+              <Text
+                style={styles.cardTextBold}
+              >{`${orderObj.address.addressName}`}</Text>
+              <Text style={styles.cardText}>{`${orderObj.address.cep}`}</Text>
+              <Text style={styles.cardText}>
+                {`${orderObj.address.city}`} - {`${orderObj.address.uf}`}
+              </Text>
+              <Text style={styles.cardText}>
+                {`${orderObj.address.number}`},{" "}
+                {`${orderObj.address.complement}`}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Produtos</Text>
+            {orderObj.orderProducts.map((item, index) => (
+              <View key={index} style={styles.card}>
+                <Text style={styles.cardTextBold}>{item.productName}</Text>
+                <Text
+                  style={styles.cardText}
+                >{`Quantidade: ${item.quantity}`}</Text>
+                <Text
+                  style={styles.cardText}
+                >{`Valor: R$${item.finalPrice.toFixed(2)}`}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Pedido</Text>
+            <View style={styles.card}>
+              <Text style={styles.cardText}>
+                {`Data do pedido: ${new Date(orderObj.orderDate).toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}`}
+              </Text>
+              <Text style={styles.cardText}>{`Total: R$${orderObj.total.toFixed(
+                2
+              )}`}</Text>
+              <Text style={styles.cardText}>
+                {`Data de entrega: ${new Date(
+                  orderObj.deliveryForecast
+                ).toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}`}
+              </Text>
+              <Text
+                style={styles.cardText}
+              >{`Método de pagamento: ${orderObj.paymentMethod}`}</Text>
+            </View>
+          </View>
+        </ScrollView>
+
+        <BottomNav
+          navigateToHome={navigateToHome}
+          navigateToPedidos={navigateToPedidos}
+        />
       </View>
-
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Seção do Cliente */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Cliente</Text>
-          <View style={styles.card}>
-            <Text style={styles.cardTextBold}>Nome cliente</Text>
-            <Text style={styles.cardText}>CPF</Text>
-            <Text style={styles.cardText}>Email</Text>
-            <Text style={styles.cardText}>Telefone contato</Text>
-          </View>
-        </View>
-
-        {/* Seção de Entrega */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Entrega</Text>
-          <View style={styles.card}>
-            <Text style={styles.cardTextBold}>Endereço</Text>
-            <Text style={styles.cardText}>CEP</Text>
-            <Text style={styles.cardText}>Cidade - UF</Text>
-            <Text style={styles.cardText}>Número, complemento</Text>
-          </View>
-        </View>
-
-        {/* Seção de Produtos */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Produtos</Text>
-          <View style={styles.card}>
-            <Text style={styles.cardTextBold}>Nome do produto</Text>
-            <Text style={styles.cardText}>Quantidade</Text>
-            <Text style={styles.cardText}>Valor</Text>
-          </View>
-        </View>
-
-        {/* Seção de Pagamento */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Pagamento</Text>
-          <View style={styles.card}>
-            <Text style={styles.cardTextBold}>Data do pedido</Text>
-            <Text style={styles.cardText}>Valor total</Text>
-          </View>
-        </View>
-      </ScrollView>
-
-      {/* Barra de Navegação */}
-      <BottomNav navigateToHome={navigateToHome} navigateToPedidos={navigateToPedidos} />
-    </View>
-  );
+    );
+  }
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
-  shadowColor: "#000000",
+    shadowColor: "#000000",
     shadowOffset: {
       width: 0,
       height: 3,
     },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    // Sombra para Android
     elevation: 5,
   },
-  
+
   headerText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 16,
   },
   scrollContainer: {
@@ -102,32 +163,32 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   card: {
     padding: 16,
     borderWidth: 1,
-    borderColor: '#1A1ABB',
+    borderColor: "#1A1ABB",
     borderRadius: 8,
-shadowColor: "#000000",
+    shadowColor: "#000000",
     shadowOffset: {
       width: 0,
       height: 6,
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    // Sombra para Android
     elevation: 5,
+    marginBottom: 10
   },
   cardTextBold: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
     marginBottom: 8,
   },
   cardText: {
     fontSize: 14,
-    color: '#666666',
+    color: "#666666",
   },
 });
 

@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import BottomNav from "./components/bottomNav";
 import { useRouter, Router } from "expo-router";
 
+import BottomNav from "./components/bottomNav";
 import { Order } from "./interfaces/Order";
 import api from "./services/api";
 
@@ -47,8 +47,12 @@ const home: React.FC = () => {
   const navigateToDetails = (router: Router, pedido: Order) => {
     router.push({
       pathname: "/orderDetails",
-      params: { pedido: JSON.stringify(pedido) },
+      params: { order: JSON.stringify(pedido) },
     });
+  };
+
+  const handleNavigation = () => {
+    router.push("/login");
   };
 
   const renderPedido = ({ item }: { item: Order }) => (
@@ -70,10 +74,6 @@ const home: React.FC = () => {
       <Icon name="chevron-right" size={24} color="#1A1ABB" />
     </TouchableOpacity>
   );
-
-  const handleNavigation = () => {
-    router.push("/login");
-  };
 
   return (
     <View style={styles.container}>
