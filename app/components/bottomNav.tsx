@@ -2,24 +2,20 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useRouter } from 'expo-router';
 
-interface BottomNavProps {
-  navigateToHome: () => void;
-  navigateToPedidos: () => void;
-}
+const BottomNav: React.FC = () => {
+  const router = useRouter();
 
-const BottomNav: React.FC<BottomNavProps> = ({
-  navigateToHome,
-  navigateToPedidos,
-}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={navigateToHome} style={styles.button}>
+      <TouchableOpacity onPress={() => router.push('/home')} style={styles.button}>
         <Icon name="home" size={30} color="#FFFFFF" />
         <Text style={styles.navText}>Início</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={navigateToPedidos} style={styles.boxButton}>
+      <TouchableOpacity onPress={() => router.push('/addStock')} style={styles.boxButton}>
         <View style={styles.circle}>
           <MaterialCommunityIcons
             name="cube-outline"
@@ -29,9 +25,9 @@ const BottomNav: React.FC<BottomNavProps> = ({
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={navigateToPedidos} style={styles.button}>
-        <Icon name="list-alt" size={30} color="#FFFFFF" />
-        <Text style={styles.navText}>Pedidos</Text>
+      <TouchableOpacity onPress={() => router.push('/home')} style={styles.button}>
+        <AntDesign name="user" size={30} color="#FFFFFF" />
+        <Text style={styles.navText}>Perfil</Text>
       </TouchableOpacity>
     </View>
   );

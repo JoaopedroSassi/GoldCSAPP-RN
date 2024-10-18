@@ -5,13 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const confirmationStock: React.FC = () => {
   const navigation = useNavigation();
-  const navigateToHome = () => {
-    // Lógica de navegação para a Home
-  };
-
-  const navigateToPedidos = () => {
-    // Lógica de navegação para a tela de Pedidos
-  };
 
   return (
     <View style={styles.container}>
@@ -37,10 +30,7 @@ const confirmationStock: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <BottomNav
-        navigateToHome={navigateToHome}
-        navigateToPedidos={navigateToPedidos}
-      />
+      <BottomNav />
     </View>
   );
 };

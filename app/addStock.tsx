@@ -9,14 +9,6 @@ import {
 import BottomNav from './components/bottomNav';
 
 const AddStock: React.FC = () => {
-    const navigateToHome = () => {
-        // Lógica de navegação para a Home
-    };
-
-    const navigateToPedidos = () => {
-        // Lógica de navegação para a tela de Pedidos
-    };
-
     const [product, setProduct] = useState('');
     const [quantity, setQuantity] = useState('');
 
@@ -53,7 +45,7 @@ const AddStock: React.FC = () => {
                 </TouchableOpacity>
             </View>
 
-            <BottomNav navigateToHome={navigateToHome} navigateToPedidos={navigateToPedidos} />
+            <BottomNav />
         </View>
     );
 };

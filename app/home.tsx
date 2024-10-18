@@ -36,14 +36,6 @@ const home: React.FC = () => {
     fetchPedidos();
   }, []);
 
-  const navigateToHome = () => {
-    // Lógica de navegação para a Home
-  };
-
-  const navigateToPedidos = () => {
-    // Lógica de navegação para a tela de Pedidos
-  };
-
   const navigateToDetails = (router: Router, pedido: Order) => {
     router.push({
       pathname: "/orderDetails",
@@ -95,10 +87,7 @@ const home: React.FC = () => {
         contentContainerStyle={styles.listaPedidos}
       />
 
-      <BottomNav
-        navigateToHome={navigateToHome}
-        navigateToPedidos={navigateToPedidos}
-      />
+      <BottomNav />
     </View>
   );
 };
