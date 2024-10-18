@@ -3,19 +3,25 @@ import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
 
 const BottomNav: React.FC = () => {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => router.push('/home')} style={styles.button}>
+      <TouchableOpacity
+        onPress={() => router.push("/home")}
+        style={styles.button}
+      >
         <Icon name="home" size={30} color="#FFFFFF" />
         <Text style={styles.navText}>Início</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push('/addStock')} style={styles.boxButton}>
+      <TouchableOpacity
+        onPress={() => router.push("/addStock")}
+        style={styles.boxButton}
+      >
         <View style={styles.circle}>
           <MaterialCommunityIcons
             name="cube-outline"
@@ -25,7 +31,10 @@ const BottomNav: React.FC = () => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push('/home')} style={styles.button}>
+      <TouchableOpacity
+        onPress={() => router.push("/profile")}
+        style={styles.button}
+      >
         <AntDesign name="user" size={30} color="#FFFFFF" />
         <Text style={styles.navText}>Perfil</Text>
       </TouchableOpacity>

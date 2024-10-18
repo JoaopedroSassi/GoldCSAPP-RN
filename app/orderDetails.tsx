@@ -9,14 +9,6 @@ const OrderDetails: React.FC = () => {
   const { order } = useLocalSearchParams();
   const orderObj: Order | null = order ? JSON.parse(order as string) : null;
 
-  const navigateToHome = () => {
-    // Lógica de navegação para a Home
-  };
-
-  const navigateToPedidos = () => {
-    // Lógica de navegação para a tela de Pedidos
-  };
-
   const handleNavigation = () => {
     router.push("/home");
   };
@@ -122,10 +114,7 @@ const OrderDetails: React.FC = () => {
           </View>
         </ScrollView>
 
-        <BottomNav
-          navigateToHome={navigateToHome}
-          navigateToPedidos={navigateToPedidos}
-        />
+        <BottomNav />
       </View>
     );
   }
@@ -149,7 +138,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-
   headerText: {
     fontSize: 18,
     fontWeight: "bold",
