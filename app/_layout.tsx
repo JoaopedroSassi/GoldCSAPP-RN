@@ -1,5 +1,7 @@
 import { Stack, usePathname, useRouter } from "expo-router";
+import React from "react";
 import { useEffect } from "react";
+import Toast from "react-native-toast-message";
 
 export default function Layout() {
   const router = useRouter();
@@ -12,10 +14,13 @@ export default function Layout() {
   }, [pathname]);
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+      <Toast />
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,17 +9,52 @@ import {
 import BottomNav from "./components/bottomNav";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { router } from "expo-router";
+import { Picker } from "@react-native-picker/picker";
+import api from "./services/api";
+import { Product } from "./interfaces/Product";
+import Toast from "react-native-toast-message";
 
 const AddStock: React.FC = () => {
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProdutos = async () => {
+      try {
+        const response = await api.get("/Product/WithoutPagination");
+
+        const success = response.data.success;
+        if (success) {
+          const result: Product[] = response.data.result;
+          setProducts(result);
+        }
+      } catch (e) {
+        console.error("Erro ao trazer os Produtos", e);
+      }
+    };
+
+    fetchProdutos();
+  }, []);
 
   const handleNavigation = () => {
     router.push("/home");
   };
 
   const handleContinue = () => {
-    console.log("Produto:", product, "Quantidade:", quantity);
+    if (!product || !quantity) {
+      Toast.show({
+        type: "error",
+        text1: "Erro",
+        text2: "Por favor, preencha todas as informações.",
+      });
+
+      setProduct("");
+      setQuantity("");
+      return;
+    } else {
+      
+    }
   };
 
   return (
@@ -35,19 +70,32 @@ const AddStock: React.FC = () => {
       </View>
 
       <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Produto"
-          value={product}
-          onChangeText={setProduct}
-          placeholderTextColor="#6A6A6A"
-        />
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={product}
+            onValueChange={(itemValue) => setProduct(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Selecione um produto" value="" />
+            {products.map((item) => (
+              <Picker.Item
+                key={item.productID}
+                label={`${item.name} - ${item.version}`}
+                value={item.productID}
+              />
+            ))}
+          </Picker>
+        </View>
+
         <TextInput
           style={styles.input}
           placeholder="Quantidade"
           value={quantity}
-          onChangeText={setQuantity}
+          onChangeText={(text) => {
+            setQuantity(text.replace(/[^0-9]/g, ""));
+          }}
           placeholderTextColor="#6A6A6A"
+          keyboardType="numeric"
         />
 
         <TouchableOpacity style={styles.button} onPress={handleContinue}>
@@ -94,6 +142,18 @@ const styles = StyleSheet.create({
   form: {
     padding: 20,
     marginTop: 20,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#FFF",
+    borderRadius: 8,
+    marginBottom: 20,
+    justifyContent: "center",
+  },
+  picker: {
+    color: "#000",
+    fontSize: 16,
+    padding: 10,
   },
   input: {
     borderWidth: 1,
