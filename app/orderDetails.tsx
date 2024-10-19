@@ -89,7 +89,9 @@ const OrderDetails: React.FC = () => {
             <Text style={styles.sectionTitle}>Pedido</Text>
             <View style={styles.card}>
               <Text style={styles.cardText}>
-                {`Data do pedido: ${new Date(orderObj.orderDate).toLocaleDateString("pt-BR", {
+                {`Data do pedido: ${new Date(
+                  orderObj.orderDate
+                ).toLocaleDateString("pt-BR", {
                   day: "2-digit",
                   month: "2-digit",
                   year: "numeric",
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
   cardTextBold: {
     fontWeight: "bold",

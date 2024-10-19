@@ -1,30 +1,84 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import BottomNav from "./components/bottomNav";
-import { useNavigation } from "@react-navigation/native";
+import { router, useLocalSearchParams } from "expo-router";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import api from "./services/api";
+import Toast from "react-native-toast-message";
 
 const confirmationStock: React.FC = () => {
-  const navigation = useNavigation();
+  const { productInsert } = useLocalSearchParams();
+  const productInsertObj = productInsert
+    ? JSON.parse(productInsert as string)
+    : null;
+
+  const handleNavigation = () => {
+    router.push("/addStock");
+  };
+
+  const handleInsert = async () => {
+    try {
+      const jsonData = {
+        productId: productInsertObj.product.productID,
+        quantity: productInsertObj.quantity,
+      };
+
+      const response = await api.post("/Product/insertAmount", jsonData);
+      const success = response.data.success;
+      if (success) {
+        Toast.show({
+          type: "success",
+          text1: "Sucesso",
+          text2: "Estoque inserido com sucesso",
+        });
+        router.push("/home");
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: "Erro ao inserir estoque",
+        });
+      }
+    } catch (e) {
+      console.error("Erro ao inserir estoque", e);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.topBar}>
-        <Text style={styles.topBarTitle}>Estoque</Text>
+      <View style={styles.header}>
+        <Icon
+          name="arrow-back"
+          size={30}
+          color="#000"
+          onPress={handleNavigation}
+        />
+        <Text style={styles.headerText}>Estoque</Text>
       </View>
 
       <View style={styles.content}>
         <View style={styles.productInfo}>
-          <Text style={styles.productLabel}>Produto</Text>
-          <Text style={styles.productDetail}>Quantidade</Text>
+          <Text style={styles.productLabel}>
+            {productInsertObj.product.name}
+          </Text>
+          <Text style={styles.productDetail}>
+            {productInsertObj.product.version}
+          </Text>
+          <Text style={styles.productDetail}>
+            {productInsertObj.product.categoryName}
+          </Text>
+          <Text
+            style={styles.productDetail}
+          >{`Quantidade: ${productInsertObj.quantity}`}</Text>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity style={styles.button} onPress={() => handleInsert()}>
           <Text style={styles.buttonText}>INSERIR ESTOQUE</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.cancelButton}
-          onPress={() => navigation.goBack()}
+          onPress={handleNavigation}
         >
           <Text style={styles.cancelButtonText}>CANCELAR</Text>
         </TouchableOpacity>
@@ -40,16 +94,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
-  topBar: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
-    alignItems: "flex-start",
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  topBarTitle: {
+  headerText: {
     fontSize: 18,
     fontWeight: "bold",
+    marginLeft: 16,
   },
   content: {
     flex: 1,

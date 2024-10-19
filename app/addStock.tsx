@@ -15,9 +15,9 @@ import { Product } from "./interfaces/Product";
 import Toast from "react-native-toast-message";
 
 const AddStock: React.FC = () => {
-  const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState("");
 
   useEffect(() => {
     const fetchProdutos = async () => {
@@ -49,11 +49,19 @@ const AddStock: React.FC = () => {
         text2: "Por favor, preencha todas as informações.",
       });
 
-      setProduct("");
+      setProduct(null);
       setQuantity("");
       return;
     } else {
-      
+      const jsonData = {
+        product: product,
+        quantity: quantity,
+      };
+
+      router.push({
+        pathname: "/confirmationStock",
+        params: { productInsert: JSON.stringify(jsonData) },
+      });
     }
   };
 
@@ -72,8 +80,13 @@ const AddStock: React.FC = () => {
       <View style={styles.form}>
         <View style={styles.pickerContainer}>
           <Picker
-            selectedValue={product}
-            onValueChange={(itemValue) => setProduct(itemValue)}
+            selectedValue={product ? product.productID : ""}
+            onValueChange={(itemValue) => {
+              const productItem = products.find(
+                (p) => p.productID == itemValue
+              );
+              setProduct(productItem || null);
+            }}
             style={styles.picker}
           >
             <Picker.Item label="Selecione um produto" value="" />
@@ -98,7 +111,10 @@ const AddStock: React.FC = () => {
           keyboardType="numeric"
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleContinue}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleContinue()}
+        >
           <Text style={styles.buttonText}>CONTINUAR</Text>
         </TouchableOpacity>
       </View>

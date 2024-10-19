@@ -36,7 +36,7 @@ const home: React.FC = () => {
     fetchPedidos();
   }, []);
 
-  const navigateToDetails = (router: Router, pedido: Order) => {
+  const navigateToDetails = (pedido: Order) => {
     router.push({
       pathname: "/orderDetails",
       params: { order: JSON.stringify(pedido) },
@@ -49,7 +49,7 @@ const home: React.FC = () => {
 
   const renderPedido = ({ item }: { item: Order }) => (
     <TouchableOpacity
-      onPress={() => navigateToDetails(router, item)}
+      onPress={() => navigateToDetails(item)}
       style={styles.pedidoContainer}
     >
       <View>
