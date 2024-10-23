@@ -57,7 +57,7 @@ const ProfileScreen = () => {
 
       <View style={styles.profileContainer}>
         <View style={styles.profileImageWrapper}>
-          <Feather name="user" size={120} color="blue" />
+          <Feather name="user" size={120} color="#1E0FA0" />
         </View>
       </View>
 
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   header: {
-    backgroundColor: "#2E3192",
+    backgroundColor: "#1E0FA0",
     height: 150,
     justifyContent: "flex-start",
     paddingLeft: 20,

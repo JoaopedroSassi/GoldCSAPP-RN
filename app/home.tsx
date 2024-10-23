@@ -97,6 +97,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
+  defaultText: {
+    fontFamily: 'OpenSans_400Regular', // Aplica a fonte em todos os textos
+    fontSize: 16,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",

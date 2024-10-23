@@ -14,7 +14,7 @@ const BottomNav: React.FC = () => {
         onPress={() => router.push("/home")}
         style={styles.button}
       >
-        <Icon name="home" size={30} color="#FFFFFF" />
+        <Icon name="home" size={40} color="#FFFFFF" />
         <Text style={styles.navText}>Início</Text>
       </TouchableOpacity>
 
@@ -25,8 +25,8 @@ const BottomNav: React.FC = () => {
         <View style={styles.circle}>
           <MaterialCommunityIcons
             name="cube-outline"
-            size={30}
-            color="#1A1ABB"
+            size={40}
+            color="#fff"
           />
         </View>
       </TouchableOpacity>
@@ -35,7 +35,7 @@ const BottomNav: React.FC = () => {
         onPress={() => router.push("/profile")}
         style={styles.button}
       >
-        <AntDesign name="user" size={30} color="#FFFFFF" />
+        <AntDesign name="user" size={40} color="#FFFFFF" />
         <Text style={styles.navText}>Perfil</Text>
       </TouchableOpacity>
     </View>
@@ -51,24 +51,27 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    padding: 10,
-    marginTop: 10,
+    padding: 6,
+    marginTop: 8,
   },
   boxButton: {
     alignItems: "center",
-    padding: 10,
+    justifyContent: "center",
+    position: "absolute", 
+    top: -40, 
+    left: "40%",
   },
   circle: {
-    width: 60,
-    height: 60,
-    backgroundColor: "#FFD700",
-    borderRadius: 30,
+    width: 80,
+    height: 80,
+    backgroundColor: "#FFB703",
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
   },
   navText: {
     color: "#FFFFFF",
-    fontSize: 12,
+    fontSize: 16,
     marginTop: 4,
   },
 });
