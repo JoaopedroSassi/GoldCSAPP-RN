@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import BottomNav from "./components/bottomNav";
 import { router, useLocalSearchParams } from "expo-router";
 import { Order } from "./interfaces/Order";
+import CustomText from "./components/customText";
 
 const OrderDetails: React.FC = () => {
   const { order } = useLocalSearchParams();
@@ -22,7 +23,7 @@ const OrderDetails: React.FC = () => {
   };
 
   if (!orderObj) {
-    return <Text>Erro ao carregar os detalhes do pedido.</Text>;
+    return <CustomText>Erro ao carregar os detalhes do pedido.</CustomText>;
   } else {
     return (
       <View style={styles.container}>
@@ -33,62 +34,62 @@ const OrderDetails: React.FC = () => {
             color="#000"
             onPress={handleNavigation}
           />
-          <Text style={styles.headerText}>Pedido {`${orderObj.orderID}`}</Text>
+          <CustomText style={styles.headerText}>Pedido {`${orderObj.orderID}`}</CustomText>
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Cliente</Text>
+            <CustomText style={styles.sectionTitle}>Cliente</CustomText>
             <View style={styles.card}>
-              <Text
+              <CustomText
                 style={styles.cardTextBold}
-              >{`${orderObj.client.name}`}</Text>
-              <Text style={styles.cardText}>{`${formatCPF(
+              >{`${orderObj.client.name}`}</CustomText>
+              <CustomText style={styles.cardText}>{`${formatCPF(
                 orderObj.client.cpf
-              )}`}</Text>
-              <Text style={styles.cardText}>{`${orderObj.client.email}`}</Text>
-              <Text style={styles.cardText}>{`${formatCellPhone(
+              )}`}</CustomText>
+              <CustomText style={styles.cardText}>{`${orderObj.client.email}`}</CustomText>
+              <CustomText style={styles.cardText}>{`${formatCellPhone(
                 orderObj.client.cellPhone
-              )}`}</Text>
+              )}`}</CustomText>
             </View>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Entrega</Text>
+            <CustomText style={styles.sectionTitle}>Entrega</CustomText>
             <View style={styles.card}>
-              <Text
+              <CustomText
                 style={styles.cardTextBold}
-              >{`${orderObj.address.addressName}`}</Text>
-              <Text style={styles.cardText}>{`${orderObj.address.cep}`}</Text>
-              <Text style={styles.cardText}>
+              >{`${orderObj.address.addressName}`}</CustomText>
+              <CustomText style={styles.cardText}>{`${orderObj.address.cep}`}</CustomText>
+              <CustomText style={styles.cardText}>
                 {`${orderObj.address.city}`} - {`${orderObj.address.uf}`}
-              </Text>
-              <Text style={styles.cardText}>
+              </CustomText>
+              <CustomText style={styles.cardText}>
                 {`${orderObj.address.number}`},{" "}
                 {`${orderObj.address.complement}`}
-              </Text>
+              </CustomText>
             </View>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Produtos</Text>
+            <CustomText style={styles.sectionTitle}>Produtos</CustomText>
             {orderObj.orderProducts.map((item, index) => (
               <View key={index} style={styles.card}>
-                <Text style={styles.cardTextBold}>{item.productName}</Text>
-                <Text
+                <CustomText style={styles.cardTextBold}>{item.productName}</CustomText>
+                <CustomText
                   style={styles.cardText}
-                >{`Quantidade: ${item.quantity}`}</Text>
-                <Text
+                >{`Quantidade: ${item.quantity}`}</CustomText>
+                <CustomText
                   style={styles.cardText}
-                >{`Valor: R$${item.finalPrice.toFixed(2)}`}</Text>
+                >{`Valor: R$${item.finalPrice.toFixed(2)}`}</CustomText>
               </View>
             ))}
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Pedido</Text>
+            <CustomText style={styles.sectionTitle}>Pedido</CustomText>
             <View style={styles.card}>
-              <Text style={styles.cardText}>
+              <CustomText style={styles.cardText}>
                 {`Data do pedido: ${new Date(
                   orderObj.orderDate
                 ).toLocaleDateString("pt-BR", {
@@ -96,11 +97,11 @@ const OrderDetails: React.FC = () => {
                   month: "2-digit",
                   year: "numeric",
                 })}`}
-              </Text>
-              <Text style={styles.cardText}>{`Total: R$${orderObj.total.toFixed(
+              </CustomText>
+              <CustomText style={styles.cardText}>{`Total: R$${orderObj.total.toFixed(
                 2
-              )}`}</Text>
-              <Text style={styles.cardText}>
+              )}`}</CustomText>
+              <CustomText style={styles.cardText}>
                 {`Data de entrega: ${new Date(
                   orderObj.deliveryForecast
                 ).toLocaleDateString("pt-BR", {
@@ -108,10 +109,10 @@ const OrderDetails: React.FC = () => {
                   month: "2-digit",
                   year: "numeric",
                 })}`}
-              </Text>
-              <Text
+              </CustomText>
+              <CustomText
                 style={styles.cardText}
-              >{`Método de pagamento: ${orderObj.paymentMethod}`}</Text>
+              >{`Método de pagamento: ${orderObj.paymentMethod}`}</CustomText>
             </View>
           </View>
         </ScrollView>

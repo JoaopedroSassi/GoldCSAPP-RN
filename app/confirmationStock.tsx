@@ -5,6 +5,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import api from "./services/api";
 import Toast from "react-native-toast-message";
+import CustomText from "./components/customText";
 
 const confirmationStock: React.FC = () => {
   const { productInsert } = useLocalSearchParams();
@@ -53,27 +54,27 @@ const confirmationStock: React.FC = () => {
           color="#000"
           onPress={handleNavigation}
         />
-        <Text style={styles.headerText}>Estoque</Text>
+        <CustomText style={styles.headerText}>Estoque</CustomText>
       </View>
 
       <View style={styles.content}>
         <View style={styles.productInfo}>
-          <Text style={styles.productLabel}>
+          <CustomText style={styles.productLabel}>
             {productInsertObj.product.name}
-          </Text>
-          <Text style={styles.productDetail}>
+          </CustomText>
+          <CustomText style={styles.productDetail}>
             {productInsertObj.product.version}
-          </Text>
-          <Text style={styles.productDetail}>
+          </CustomText>
+          <CustomText style={styles.productDetail}>
             {productInsertObj.product.categoryName}
-          </Text>
-          <Text
+          </CustomText>
+          <CustomText
             style={styles.productDetail}
-          >{`Quantidade: ${productInsertObj.quantity}`}</Text>
+          >{`Quantidade: ${productInsertObj.quantity}`}</CustomText>
         </View>
 
         <TouchableOpacity style={styles.button} onPress={() => handleInsert()}>
-          <Text style={styles.buttonText}>INSERIR ESTOQUE</Text>
+          <CustomText style={styles.buttonText}>INSERIR ESTOQUE</CustomText>
         </TouchableOpacity>
 
         <TouchableOpacity

@@ -14,6 +14,10 @@ import { useRouter } from "expo-router";
 
 import api from "./services/api";
 
+import { useFonts, OpenSans_400Regular, OpenSans_700Bold } from "@expo-google-fonts/open-sans";
+import * as SplashScreen from "expo-splash-screen"; 
+import CustomText from "./components/customText";
+
 const login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -22,6 +26,18 @@ const login: React.FC = () => {
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const router = useRouter();
 
+
+ const [fontsLoaded] = useFonts({
+  OpenSans_400Regular,
+  OpenSans_700Bold,
+});
+
+useEffect(() => {
+  if (fontsLoaded) {
+    SplashScreen.hideAsync(); 
+  }
+}, [fontsLoaded]);
+  
   useEffect(() => {
     const clearStorageItem = async () => {
       try {
@@ -33,6 +49,11 @@ const login: React.FC = () => {
 
     clearStorageItem();
   });
+
+  if (!fontsLoaded) {
+    return null; 
+  }
+
 
   const handleLogin = async () => {
     try {
@@ -111,11 +132,11 @@ const login: React.FC = () => {
         </View>
 
         {error && (
-          <Text style={styles.errorText}>Senha ou email incorretos!</Text>
+          <CustomText style={styles.errorText}>Senha ou email incorretos!</CustomText>
         )}
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>ENTRAR</Text>
+          <CustomText style={styles.buttonText}>ENTRAR</CustomText>
         </TouchableOpacity>
       </View>
     </View>
