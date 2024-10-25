@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "./interfaces/DecodedToken";
+import CustomText from "./components/customText";
 
 const handleNavigation = () => {
   router.push("/home");
@@ -53,18 +54,19 @@ const ProfileScreen = () => {
           color="#FFF"
           onPress={handleNavigation}
         />
+        <CustomText style={styles.headerTextProfile}>Perfil</CustomText>
       </View>
 
       <View style={styles.profileContainer}>
         <View style={styles.profileImageWrapper}>
-          <Feather name="user" size={120} color="blue" />
+          <Feather name="user" size={180} color="#1E0FA0" />
         </View>
       </View>
 
       <View style={styles.infoCard}>
-        <Text style={styles.userName}>{userInfo.name}</Text>
-        <Text style={styles.userDetail}>{userInfo.email}</Text>
-        <Text style={styles.userDetail}>{userInfo.role}</Text>
+        <CustomText style={styles.userName}>{userInfo.name}</CustomText>
+        <CustomText style={styles.userDetail}>{userInfo.email}</CustomText>
+        <CustomText style={styles.userDetail}>{userInfo.role}</CustomText>
       </View>
 
       <BottomNav />
@@ -79,8 +81,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   header: {
-    backgroundColor: "#2E3192",
-    height: 150,
+    backgroundColor: "#1E0FA0",
+    height: 250,
     justifyContent: "flex-start",
     paddingLeft: 20,
     flexDirection: "row",
@@ -99,9 +101,9 @@ const styles = StyleSheet.create({
     marginTop: -220,
   },
   profileImageWrapper: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
+    width: 250,
+    height: 250,
+    borderRadius: 130,
     backgroundColor: "#FFF",
     justifyContent: "center",
     alignItems: "center",
@@ -119,22 +121,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     shadowColor: "#000",
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 10,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 5,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 8,
     marginBottom: 120,
+    borderWidth: 1,
+    borderColor: "#1A1ABB",
   },
+
   userName: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#2E3192",
-    marginBottom: 10,
+    color: "#1E0FA0",
+    marginBottom: 12,
   },
   userDetail: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#7D7D7D",
-    marginBottom: 5,
+    marginBottom: 6,
   },
   bottomNav: {
     flexDirection: "row",
@@ -143,6 +148,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: "#1A1ABB",
   },
+  headerTextProfile:{
+    fontSize: 22,
+    marginLeft: 16,
+    color: "#fff",
+    alignItems:"center",
+  }
 });
 
 export default ProfileScreen;

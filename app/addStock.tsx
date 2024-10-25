@@ -13,6 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 import api from "./services/api";
 import { Product } from "./interfaces/Product";
 import Toast from "react-native-toast-message";
+import CustomText from "./components/customText";
 
 const AddStock: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -74,7 +75,7 @@ const AddStock: React.FC = () => {
           color="#000"
           onPress={handleNavigation}
         />
-        <Text style={styles.headerText}>Estoque</Text>
+        <CustomText style={styles.headerText}>Estoque</CustomText>
       </View>
 
       <View style={styles.form}>
@@ -115,7 +116,7 @@ const AddStock: React.FC = () => {
           style={styles.button}
           onPress={() => handleContinue()}
         >
-          <Text style={styles.buttonText}>CONTINUAR</Text>
+          <CustomText style={styles.buttonText}>CONTINUAR</CustomText>
         </TouchableOpacity>
       </View>
 
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   picker: {
-    color: "#000",
+    color: "#6A6A6A",
     fontSize: 16,
     padding: 10,
   },

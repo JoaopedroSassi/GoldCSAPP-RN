@@ -13,6 +13,7 @@ import { useRouter, Router } from "expo-router";
 import BottomNav from "./components/bottomNav";
 import { Order } from "./interfaces/Order";
 import api from "./services/api";
+import CustomText from "./components/customText";
 
 const home: React.FC = () => {
   const router = useRouter();
@@ -53,15 +54,15 @@ const home: React.FC = () => {
       style={styles.pedidoContainer}
     >
       <View>
-        <Text style={styles.pedidoCliente}>{item.client.name}</Text>
-        <Text style={styles.pedidoNumero}>{item.orderID}</Text>
-        <Text style={styles.pedidoData}>
+        <CustomText style={styles.pedidoCliente}>{item.client.name}</CustomText>
+        <CustomText style={styles.pedidoNumero}>{item.orderID}</CustomText>
+        <CustomText style={styles.pedidoData}>
           {new Date(item.orderDate).toLocaleDateString("pt-BR", {
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
           })}
-        </Text>
+        </CustomText>
       </View>
       <Icon name="chevron-right" size={24} color="#1A1ABB" />
     </TouchableOpacity>
@@ -75,11 +76,11 @@ const home: React.FC = () => {
           style={styles.logo}
         />
         <TouchableOpacity onPress={handleNavigation}>
-          <Icon name="exit-to-app" size={30} color="#1A1ABB" />
+          <Icon name="exit-to-app" size={40} color="#1A1ABB" />
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.title}>Últimos pedidos</Text>
+      <CustomText style={styles.title}>Últimos pedidos</CustomText>
 
       <FlatList
         data={orders}
@@ -97,6 +98,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
+  defaultText: {
+    fontFamily: 'OpenSans_400Regular', // Aplica a fonte em todos os textos
+    fontSize: 16,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -105,10 +110,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
     borderBottomColor: "#E0E0E0",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   logo: {
-    width: 100,
-    height: 50,
+    width: 130,
+    height: 90,
     resizeMode: "contain",
   },
   title: {
