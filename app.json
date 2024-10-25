@@ -4,11 +4,12 @@
     "slug": "GoldCSAPP-RN",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./app/assets/logoGoldCS.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./app/assets/logoGoldCS.png",
+      
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,20 +18,26 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./app/assets/logoGoldCS.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ww1ll.GoldCSAPPRN"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./app/assets/logoGoldCS.png"
     },
     "plugins": [
       "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1c64b30c-ef9e-4ee6-b96c-89df1273de8c"
+      }
     }
   }
 }
