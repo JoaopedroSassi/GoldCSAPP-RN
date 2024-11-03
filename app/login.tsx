@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -24,6 +25,7 @@ const login: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
 
@@ -56,6 +58,8 @@ useEffect(() => {
 
 
   const handleLogin = async () => {
+    setLoading(true); 
+    setError(false); 
     try {
       const response = await api.post("/Authenticate/LoginUser", {
         email,
@@ -71,6 +75,8 @@ useEffect(() => {
       setError(true);
       setEmail("");
       setPassword("");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -135,8 +141,16 @@ useEffect(() => {
           <CustomText style={styles.errorText}>Senha ou email incorretos!</CustomText>
         )}
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <CustomText style={styles.buttonText}>ENTRAR</CustomText>
+        <TouchableOpacity 
+            style={[styles.button, loading && styles.buttonDisabled]}
+            onPress={handleLogin}
+            disabled={loading} 
+            >
+          {loading ? (
+            <ActivityIndicator size="small" color="#FFFFFF" /> 
+          ) : (
+            <CustomText style={styles.buttonText}>ENTRAR</CustomText>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -195,6 +209,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: "center",
+  },
+  buttonDisabled: {
+    opacity: 0.7, 
   },
   buttonText: {
     color: "#FFFFFF",
