@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
@@ -19,7 +18,7 @@ import { useFonts, OpenSans_400Regular, OpenSans_700Bold } from "@expo-google-fo
 import * as SplashScreen from "expo-splash-screen"; 
 import CustomText from "./components/customText";
 
-const login: React.FC = () => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
@@ -28,18 +27,17 @@ const login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
+  const [fontsLoaded] = useFonts({
+    OpenSans_400Regular,
+    OpenSans_700Bold,
+  });
 
- const [fontsLoaded] = useFonts({
-  OpenSans_400Regular,
-  OpenSans_700Bold,
-});
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync(); 
+    }
+  }, [fontsLoaded]);
 
-useEffect(() => {
-  if (fontsLoaded) {
-    SplashScreen.hideAsync(); 
-  }
-}, [fontsLoaded]);
-  
   useEffect(() => {
     const clearStorageItem = async () => {
       try {
@@ -50,16 +48,21 @@ useEffect(() => {
     };
 
     clearStorageItem();
-  });
+  }, []);
 
   if (!fontsLoaded) {
     return null; 
   }
 
-
   const handleLogin = async () => {
+    if (loading) {
+      console.log("Login já em andamento...");
+      return;
+    }
     setLoading(true); 
     setError(false); 
+
+    console.log("Iniciando login...");
     try {
       const response = await api.post("/Authenticate/LoginUser", {
         email,
@@ -68,15 +71,18 @@ useEffect(() => {
 
       const { token } = response.data.result;
 
+      console.log("Login bem-sucedido, token recebido!");
       await AsyncStorage.setItem("jwtToken", token);
 
       router.push("/home");
     } catch (error) {
+      console.error("Erro no login:", error);
       setError(true);
       setEmail("");
       setPassword("");
     } finally {
       setLoading(false); 
+      console.log("Processo de login finalizado.");
     }
   };
 
@@ -100,12 +106,8 @@ useEffect(() => {
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
-          onFocus={() => {
-            setFocusedInput("email");
-          }}
-          onBlur={() => {
-            setFocusedInput(null);
-          }}
+          onFocus={() => setFocusedInput("email")}
+          onBlur={() => setFocusedInput(null)}
           placeholderTextColor={getPlaceholderTextColor("email")}
           keyboardType="email-address"
         />
@@ -119,12 +121,8 @@ useEffect(() => {
             placeholder="Senha"
             value={password}
             onChangeText={setPassword}
-            onFocus={() => {
-              setFocusedInput("password");
-            }}
-            onBlur={() => {
-              setFocusedInput(null);
-            }}
+            onFocus={() => setFocusedInput("password")}
+            onBlur={() => setFocusedInput(null)}
             secureTextEntry={!showPassword}
             placeholderTextColor={getPlaceholderTextColor("password")}
           />
@@ -141,13 +139,12 @@ useEffect(() => {
           <CustomText style={styles.errorText}>Senha ou email incorretos!</CustomText>
         )}
 
-        <TouchableOpacity 
-            style={[styles.button, loading && styles.buttonDisabled]}
-            onPress={handleLogin}
-            disabled={loading} 
-            >
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+        >
           {loading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" /> 
+            <ActivityIndicator size="small" color="#FFFFFF" />
           ) : (
             <CustomText style={styles.buttonText}>ENTRAR</CustomText>
           )}
@@ -220,4 +217,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default login;
+export default Login;
